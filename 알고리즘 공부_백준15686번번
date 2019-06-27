@@ -1,0 +1,109 @@
+package 백준_치킨배달;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.concurrent.DelayQueue;
+
+public class 백준_치킨배달 {
+
+ static int a, b, c;
+ static int arr[][];
+ static int dx[] = { -1, 0, 0, 1 };
+ static int dy[] = { 0, -1, 1, 0 };
+ static int[][] visited;
+ static int[][] dist;
+ static int cx, cy;
+ static int k;// 치킨집수
+ static int[] kk;
+ static int cnt = 0;
+ static int sol = 0;
+ static int t = 0; // 도시의 치킨거리 변수
+ static Queue<Integer> que = new LinkedList<>();
+ static Queue<Integer> que1 = new LinkedList<>();
+ 
+
+ 
+ static class Node {
+  int x;
+  int y;
+
+  Node(int x, int y) {
+   x = this.x;
+   y = this.y;
+  }
+ }
+ 
+ 
+ 
+ public static void main(String[] args) {
+
+  Scanner sc = new Scanner(System.in);
+  a = sc.nextInt(); // 전체 배열
+  b = sc.nextInt(); // 2인 치킨집수
+
+  arr = new int[a][a];
+
+  for (int i = 0; i < a; i++) {
+   for (int j = 0; j < a; j++) {
+    arr[i][j] = sc.nextInt();
+    if (arr[i][j] == 2) {
+     k++;
+     Node kk = new Node(i,j);
+     //System.out.println(kk);
+    }
+   }
+  }
+
+  for (int i = 0; i < a; i++) {
+   for (int j = 0; j < a; j++) {
+    if (arr[i][j] == 1) {
+     cnt = 0;
+     que.clear();
+     dist = new int[a][a];
+     visited = new int[a][a];
+     BFS(i * a + j);
+     System.out.println(cnt);
+     sol = sol + cnt;
+    }
+    // System.out.print(arr[i][j]);
+   }
+   // System.out.println();
+  }
+
+  System.out.println(sol);
+ }
+
+ public static void BFS(int num) {
+
+  que.add(num);
+
+  while (!que.isEmpty()) {
+
+   int n = que.poll();
+   int x = n / a;
+   int y = n % a;
+
+   for (int i = 0; i < 4; i++) {
+    cx = x + dx[i];
+    cy = y + dy[i];
+
+    if (cx >= 0 && cy >= 0 && cx < a && cy < a && visited[cx][cy] == 0) {
+     visited[cx][cy] = 1;
+     dist[cx][cy] = dist[x][y] + 1;
+
+     if (arr[cx][cy] == 2) {
+      cnt = dist[cx][cy];
+      return;
+     }
+
+     que.add(cx * a + cy);
+
+    }
+
+   }
+  }
+
+ }
+
+}
